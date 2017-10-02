@@ -1,0 +1,103 @@
+--------------------------------------------------
+
+POST /api/shipments HTTP/1.1
+Content-Type: application/json; charset="utf-8"
+
+{
+    "shipment": {
+        "value": 1500.0,
+        "weight_kg": 2000,
+        "contact": {
+            "name": "Carlos", "phone": "(11) 98765-4321"
+        },
+        "vehicles": [
+            { "type": "Truck", "body_type": "Baú" },
+            { "type": "Truck", "body_type": "Sider" }
+        ],
+        "origin": { "city": "São Paulo", "state": "SP", "load_at": "2017-09-25" },
+        "destination": { "city": "Goiânia", "state": "GO", "deliver_at": "2017-09-29" },
+    }
+}
+
+HTTP/1.1 201 Created
+Location: /api/shipments/1
+
+--------------------------------------------------
+
+GET /api/shipments/1 HTTP/1.1
+
+HTTP/1.1 200 OK
+Content-Type: application/json; charset="utf-8"
+
+{
+    "id": 1,
+    "shipment": {
+        "value": 1500.0,
+        "weight_kg": 2000,
+        "contact": {
+            "name": "Carlos", "phone": "(11) 98765-4321"
+        },
+        "vehicles": [
+            { "type": "Truck", "body_type": "Baú" },
+            { "type": "Truck", "body_type": "Sider" }
+        ],
+        "origin": { "city": "São Paulo", "state": "SP", "load_at": "2017-09-25" },
+        "destination": { "city": "Goiânia", "state": "GO", "deliver_at": "2017-09-29" },
+    }
+}
+
+
+--------------------------------------------------
+
+POST /api/truckers HTTP/1.1
+Content-Type: application/json; charset="utf-8"
+
+{
+    "trucker": {
+        "name": "Lincoln Falcão",
+        "phone": "(11) 97654-3210",
+        "vehicle": {
+            "type": "Truck", "body_type": "Baú"
+        }
+    }
+}
+
+HTTP/1.1 201 Created
+Location: /api/truckers/1
+
+--------------------------------------------------
+
+PUT /api/truckers/1/last_location
+Content-Type: application/json; charset="utf-8"
+
+{
+    "location": {
+        "city": "São Paulo",
+        "state": "SP"
+    }
+}
+
+HTTP 204 No Content
+
+--------------------------------------------------
+
+GET /api/shipments/1/nearby_truckers HTTP/1.1
+
+
+HTTP 200 OK
+Content-Type: application/json; charset="utf-8"
+
+{
+    "truckers": [
+        {
+            "id": 1,
+            "name": "Lincoln Falcão",
+            "phone": "(11) 97654-3210",
+            "vehicle": {
+                "type": "Truck", "body_type": "Baú"
+            }
+        }
+    ]
+}
+
+--------------------------------------------------

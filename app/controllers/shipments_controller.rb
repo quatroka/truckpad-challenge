@@ -2,10 +2,10 @@ class ShipmentsController < ApplicationController
   def create
     create = create_shipment(create_params)
     if create.class != String
-      render json: { Location: "/api/shipments/#{create}" },
+      render json: { Location: '/api/shipments/#{create}' },
              status: :created
     else
-      render json: { error: "Missing parameters: #{create}" },
+      render json: { error: 'Missing parameters: #{create}' },
              status: :unprocessable_entity
     end
   end
@@ -31,7 +31,27 @@ class ShipmentsController < ApplicationController
                               load_at: result[:destination_deliver_at] } }
       render json: json, status: :ok
     rescue
-      render json: { error: "Can\'t find id: #{id}" },
+      render json: { error: 'Can\'t find id: #{id}' },
+             status: :unprocessable_entity
+    end
+  end
+
+  def nearby_truckers
+    id = nearby_truckers_params[:id].to_i
+    begin
+      city = Shipment.find(id).origin_city
+      truckers = Trucker.where(last_location_city: city)
+      json = { truckers: truckers.map do |t|
+                           { id: t[:id],
+                             name: t[:name],
+                             phone: t[:phone],
+                             vehicle: { type: t[:vehicle_type],
+                                        body_type: t[:vehicle_body_type] } }
+                         end }
+      render json: json,
+             status: :ok
+    rescue
+      render json: { error: 'Can\'t find id: #{id}' },
              status: :unprocessable_entity
     end
   end
@@ -69,6 +89,10 @@ class ShipmentsController < ApplicationController
   end
 
   def shipment_params
+    params.permit(:id)
+  end
+
+  def nearby_truckers_params
     params.permit(:id)
   end
 end

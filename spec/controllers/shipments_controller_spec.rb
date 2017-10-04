@@ -21,10 +21,27 @@ RSpec.describe ShipmentsController, type: :controller do
 
   describe 'POST #create' do
     it 'a shipment' do
-      get :shipment, params: { id: 1 }
       post :create, params: shipment
       expect(response.status).to eq(201)
       expect(JSON.parse(response.body).keys[0]).to eq('Location')
+    end
+  end
+
+  describe 'GET #shipment' do
+    before { post :create, params: shipment }
+    it 'by id' do
+      get :shipment, params: { id: 1 }
+      expect(response.status).to eq(200)
+      expect(JSON.parse(response.body).keys[0]).to eq('value')
+    end
+  end
+
+  describe 'GET #nearby_truckers' do
+    before { post :create, params: shipment }
+    it 'by shipment id' do
+      get :nearby_truckers, params: { id: 1 }
+      expect(response.status).to eq(200)
+      expect(JSON.parse(response.body).keys[0]).to eq('truckers')
     end
   end
 end

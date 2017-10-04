@@ -1,24 +1,21 @@
-# README
+# TruckPad Challenge
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Ruby version
 
-Things you may want to cover:
+    2.4.1
 
-* Ruby version
+### Rails Version
 
-* System dependencies
+    5.1.4
 
-* Configuration
+### Install system dependencies
 
-* Database creation
+    bundle install
 
-* Database initialization
+### Database creation
+ 
+    bundle exec rails db:setup
 
-* How to run the test suite
+### How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+    bundle exec rspec

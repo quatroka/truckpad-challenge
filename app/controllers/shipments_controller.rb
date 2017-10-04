@@ -1,4 +1,6 @@
 class ShipmentsController < ApplicationController
+  ##
+  # Create a shipment
   def create
     create = create_shipment(create_params)
     if create.class != String
@@ -10,6 +12,8 @@ class ShipmentsController < ApplicationController
     end
   end
 
+  ##
+  # Get a shipment details by ID.
   def shipment
     id = shipment_params[:id].to_i
     begin
@@ -36,6 +40,8 @@ class ShipmentsController < ApplicationController
     end
   end
 
+  ##
+  # Get nearby truckers from a shipment ID
   def nearby_truckers
     id = nearby_truckers_params[:id].to_i
     begin
@@ -58,6 +64,8 @@ class ShipmentsController < ApplicationController
 
   private
 
+  ##
+  # Params to use on action *create*
   def create_params
     params.require(:shipment).permit(:value, :weight_kg,
                                      contact: %i[name phone],
@@ -66,6 +74,9 @@ class ShipmentsController < ApplicationController
                                      destination: %i[city state deliver_at])
   end
 
+  ##
+  # Create a shipment on system
+  # +params+ -> Object of shipment attributes
   def create_shipment(params)
     %w[value weight_kg contact vehicles origin destination].each do |k|
       return k unless params.key?(k)
@@ -88,10 +99,14 @@ class ShipmentsController < ApplicationController
     Shipment.last.id
   end
 
+  ##
+  # Params to use on action *shipment*
   def shipment_params
     params.permit(:id)
   end
 
+  ##
+  # Params to use on action *nearby_truckers*
   def nearby_truckers_params
     params.permit(:id)
   end
